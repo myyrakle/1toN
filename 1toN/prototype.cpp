@@ -3,12 +3,8 @@
 //#define _PRINT_MODE //출력 여부를 결정합니다.
 
 
-int main()
+int no_main()
 {
-	constexpr auto side = 5; //인터페이스 한 변의 길이
-	constexpr auto MAX = 100; //최대 입력값 개수
-	constexpr auto InterfaceSize = side*side; //인터페이스의 총 크기
-	
 Timer timer;
 int time=0;
 

@@ -17,13 +17,8 @@ void bubble_sort(Array& arr)
 }
 
 
-int no_main()
+int main()
 {
-	
-	constexpr auto side = 5; //인터페이스 한 변의 길이
-	constexpr auto MAX = 100; //최대 입력값 개수
-	constexpr auto InterfaceSize = side * side; //인터페이스의 총 크기
-
 Timer timer;
 int time = 0;
 int sort_time = 0;
@@ -74,7 +69,7 @@ int sort_time = 0;
 				for (auto& e : arr)
 				{
 					e = wating_array[i];
-					std::cout << e << " ";
+					//std::cout << e << " ";
 					i++;
 				}
 			}
@@ -129,8 +124,8 @@ timer.start();
 timer.stop(); 
 sort_time += timer.get_nano();
 
-			show_interface(interface_array);
-			std::cout << std::endl;
+			//show_interface(interface_array);
+			//std::cout << std::endl;
 		}
 	}
 
