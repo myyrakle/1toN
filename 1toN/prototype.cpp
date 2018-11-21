@@ -3,10 +3,14 @@
 //#define _PRINT_MODE //출력 여부를 결정합니다.
 
 
-int no_main()
+int prototype()
 {
 Timer timer;
-int time=0;
+Timer all_timer;
+long long all_time = 0;
+long long search_time=0;
+
+all_timer.start();
 
 	//인터페이스 5x5 배열
 	std::array<std::array<int, side>, side> interface_array;
@@ -80,7 +84,7 @@ timer.start();
 				}
 			}
 timer.stop();
-time += timer.get_nano();
+search_time += timer.get_nano();
 			//빼고 대기중인 값 삽입
 
 			//대기배열에 값이 MAX보다 큰 경우 0 삽입
@@ -98,7 +102,11 @@ time += timer.get_nano();
 		}
 	}
 
-	std::cout << "최소값 탐색시간 총합 : " << time << std::endl;
+all_timer.stop();
+all_time = all_timer.get_nano();
+
+	std::cout << "최소값 탐색시간 총합 : " << search_time << std::endl;
+	std::cout << "전체 수행시간 : " << all_time << std::endl;
 
 	return 0;
 }

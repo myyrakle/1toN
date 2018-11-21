@@ -1,31 +1,20 @@
-//#define _PRINT_MODE //출력 여부를 결정합니다.
-
 #include "pch.h"
 
-//선택하는게 너무 느려서 정렬한다음 맨 앞의 값을 가져오게 했다.
+//버블소트가 너무 느려서 내장 정렬함수인 std::sort 사용.
 
-template <class Array>
-void bubble_sort(Array& arr)
-{
-	for (int unsorted_until = arr.size() - 1;
-		unsorted_until != 0; unsorted_until--)
-	{
-		//0이 찍혀있으면.. 무시
-		for (int i = 1; i <= unsorted_until && *(arr[i]) != 0; i++) 
-			if (*(arr[i]) < *(arr[i - 1]))
-				std::swap(arr[i], arr[i - 1]);
-	}
-}
+//std::sort는 퀵소트, 힙소트, 삽입소트의 혼합이다.
+//std::sort는 기본적으로 퀵소트를 쓰다가, 퀵소트가 너무 느린 경우라면 힙소트를 쓴다.
+//그리고 대부분이 정렬되어있을 경우에는 삽입소트로 마무리한다.
+//그래서 웬만하면 n log n의 복잡도를 보여준다.
 
-
-int first()
+int second()
 {
 Timer timer;
 Timer all_timer;
-long long time = 0;
+long long search_time = 0;
 long long sort_time = 0;
 
-all_timer.start();
+	all_timer.start();
 
 	//인터페이스 5x5 배열
 	std::array<std::array<int, side>, side> interface_array;
@@ -40,7 +29,7 @@ all_timer.start();
 
 	//일단 초기화
 	int i = 0;
-	for(auto& arr : interface_array)
+	for (auto& arr : interface_array)
 		for (auto& e : arr)
 		{
 			indexing_array[i] = &e;
@@ -48,7 +37,9 @@ all_timer.start();
 		}
 
 	//정렬한다.
-	bubble_sort(indexing_array);
+	std::sort(indexing_array.begin(),indexing_array.end(),
+		[](int* lhs, int* rhs) {return (*lhs) < (*rhs); }
+		);
 
 	bool on_first = true;
 
@@ -73,7 +64,6 @@ all_timer.start();
 				for (auto& e : arr)
 				{
 					e = wating_array[i];
-					//std::cout << e << " ";
 					i++;
 				}
 			}
@@ -92,9 +82,12 @@ all_timer.start();
 		//25번 반복해서 확인하고 넣고...
 		for (int i = 0; i < InterfaceSize; i++)
 		{
+			int blank_count = 0; //대기 배열에 0이 차있는 수
+
 			auto min_pos = &(interface_array[0][0]);
 
-			while (*min_pos == 0) {
+			while (*min_pos == 0) 
+			{
 				min_pos++;
 			}
 			//인터페이스 최소값의 위치를 기억할 포인터입니다.
@@ -103,17 +96,20 @@ all_timer.start();
 timer.start();
 			//현재 인터페이스에서 제일 작은걸 찾습니다.
 			min_pos = indexing_array[0];
-timer.stop(); 
-time += timer.get_nano();
+timer.stop();
+search_time += timer.get_nano();
 			//빼고 대기중인 값 삽입
 
 #ifdef _PRINT_MODE
 			std::cout << *min_pos << std::endl;
 #endif
 
-			//대기배열에 값이 MAX보다 큰 경우 0 삽입
+			//대기배열의 값이 MAX보다 큰 경우 0 삽입
 			if (wating_array[i] > MAX)
+			{
 				*min_pos = 0;
+				blank_count++;
+			}
 			//대기배열에 값이 MAX아래일 경우에만 인터페이스에 값 변경
 			else
 				*min_pos = wating_array[i]; //대기중인 값 저장
@@ -123,9 +119,9 @@ timer.start();
 			std::rotate(indexing_array.begin(), //맨 앞이 0이 됐으니까 한칸 앞으로 밀기
 				indexing_array.begin() + 1,
 				indexing_array.end());
-			bubble_sort(indexing_array);
-			//std::sort(indexing_array.begin(), indexing_array.end());
-timer.stop(); 
+			std::sort(indexing_array.begin(), indexing_array.end()-blank_count,
+				[](int* lhs, int* rhs) {return (*lhs) < (*rhs); });
+timer.stop();
 sort_time += timer.get_nano();
 
 			//show_interface(interface_array);
@@ -133,13 +129,12 @@ sort_time += timer.get_nano();
 		}
 	}
 
-all_timer.stop();
-long long all_time = all_timer.get_nano();
+	all_timer.stop();
+	long long all_time = all_timer.get_nano();
 
-	std::cout << "최소값 탐색시간 총합 : " << time << std::endl;
+	std::cout << "최소값 탐색시간 총합 : " << search_time << std::endl;
 	std::cout << "정렬시간 총합 : " << sort_time << std::endl;
 	std::cout << "전체 수행시간 : " << all_time << std::endl;
 
 	return 0;
 }
-
