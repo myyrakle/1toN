@@ -3,19 +3,20 @@
 //#define _PRINT_MODE //출력 여부를 결정합니다.
 
 
-int prototype()
+void prototype()
 {
 Timer timer;
 Timer all_timer;
+
 long long all_time = 0;
 long long search_time=0;
 
 all_timer.start();
 
+	int n = 1; //현재 값
+
 	//인터페이스 5x5 배열
 	std::array<std::array<int, side>, side> interface_array;
-
-	int n = 1; //현재 값
 
 	//대기용 배열
 	std::array<int, InterfaceSize> wating_array{ 0, }; //0으로 초기화
@@ -48,7 +49,7 @@ all_timer.start();
 				}
 			}
 
-			show_interface(interface_array);
+			//show_interface(interface_array);
 		}
 
 		//25개를 넣습니다.
@@ -65,9 +66,9 @@ all_timer.start();
 		{			
 			auto min_pos = &(interface_array[0][0]);
 			
-			while (*min_pos == 0) {
+			while (*min_pos == 0) 
 				min_pos++;
-			}
+			
 			//인터페이스 최소값의 위치를 기억할 포인터입니다.
 
 			/*최소값을 가져옵니다.*/
@@ -84,7 +85,10 @@ timer.start();
 			}
 timer.stop();
 search_time += timer.get_nano();
-			//빼고 대기중인 값 삽입
+
+			
+
+			//빼고 대기중인 값 삽입			
 
 			//대기배열에 값이 MAX보다 큰 경우 0 삽입
 			if (wating_array[i] > MAX)
@@ -92,12 +96,8 @@ search_time += timer.get_nano();
 			//대기배열에 값이 MAX아래일 경우에만 인터페이스에 값 변경
 			else
 				*min_pos = wating_array[i]; //대기중인 값 저장
-			
-			#ifdef _PRINT_MODE
-				std::cout << std::endl;
-			#endif
 
-			show_interface(interface_array);
+			//show_interface(interface_array);
 		}
 	}
 
@@ -106,7 +106,5 @@ all_time = all_timer.get_nano();
 
 	std::cout << "최소값 탐색시간 총합 : " << search_time << std::endl;
 	std::cout << "전체 수행시간 : " << all_time << std::endl;
-
-	return 0;
 }
 

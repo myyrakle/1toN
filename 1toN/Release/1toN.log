@@ -1,0 +1,13 @@
+﻿  pch.cpp
+  first.cpp
+  fourth.cpp
+  main.cpp
+  prototype.cpp
+  second.cpp
+  third.cpp
+  코드를 생성하고 있습니다.
+  46 of 311 functions (14.8%) were compiled, the rest were copied from previous compilation.
+    40 functions were new in current compilation
+    6 functions had inline decision re-evaluated but remain unchanged
+  코드를 생성했습니다.
+  1toN.vcxproj -> C:\Users\selab\source\repos\1toN\Release\1toN.exe

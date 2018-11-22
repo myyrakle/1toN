@@ -8,16 +8,18 @@
 //트리 정렬용 비교클래스
 struct Comparer
 {
-	constexpr bool operator()(int* lhs, int*rhs)
+	constexpr bool operator()(const int* lhs, const int* rhs)
 	{
-		if ((*rhs) == 0) //0이면 무조건 뒤로 밀어버림
-			return false;
+		//if ((*rhs) == 0) //0이면 무조건 뒤로 밀어버림
+		//	return true;
+		//if (*lhs == 0)
+		//	return false;
 
 		return (*lhs) < (*rhs);
 	}
 };
 
-int third()
+void third()
 {
 Timer timer;
 Timer all_timer;
@@ -71,7 +73,7 @@ all_timer.start();
 					indexing_set.insert(&e);
 				}
 
-			show_interface(interface_array);
+			//show_interface(interface_array);
 		}
 
 		//25개를 넣습니다.
@@ -95,24 +97,22 @@ timer.start();
 timer.stop();
 search_time += timer.get_nano();
 
-			std::cout << "최소값: " << *min_pos
-			<< std::endl << std::endl << std::endl;
+			//std::cout << "최소값: " << *min_pos<< std::endl << std::endl << std::endl;
 
 			//빼고 대기중인 값 삽입
 			indexing_set.erase(indexing_set.begin()); //정렬을 위해서 뺐다가
 
 			//대기배열의 값이 MAX보다 큰 경우 0 삽입
 			if (wating_array[i] > MAX)
-			{
 				*min_pos = 0;
-			}
+			
 			//대기배열에 값이 MAX아래일 경우에만 인터페이스에 값 변경
 			else
 				*min_pos = wating_array[i]; //대기중인 값 저장
 
 			indexing_set.insert(min_pos); //정렬을 위해서 다시 넣음
 
-			show_interface(interface_array);
+			//show_interface(interface_array);
 		}
 	}
 
@@ -121,6 +121,4 @@ long long all_time = all_timer.get_nano();
 
 	std::cout << "최소값 탐색시간 총합 : " << search_time << std::endl;
 	std::cout << "전체 수행시간 : " << all_time << std::endl;
-
-	return 0;
 }

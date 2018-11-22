@@ -7,7 +7,7 @@
 //그리고 대부분이 정렬되어있을 경우에는 삽입소트로 마무리한다.
 //그래서 웬만하면 n log n의 복잡도를 보여준다.
 
-int second()
+void second()
 {
 Timer timer;
 Timer all_timer;
@@ -69,7 +69,7 @@ long long sort_time = 0;
 				[](int* lhs, int* rhs) {return (*lhs) < (*rhs); }
 			);
 
-			show_interface(interface_array);
+			//show_interface(interface_array);
 		}
 
 		//대기배열에 25개를 넣습니다.
@@ -84,27 +84,23 @@ long long sort_time = 0;
 		//25번 반복해서 확인하고 넣고...
 		for (int i = 0; i < InterfaceSize; i++)
 		{
-			//int blank_count = 0; //대기 배열에 0이 차있는 수
-
-			//인터페이스 최소값의 위치를 기억할 포인터입니다.
-			int* min_pos = indexing_array[0];
+			int zero_count = 0;
 			
 timer.start();
-			//현재 인터페이스에서 제일 작은걸 찾습니다.
-			min_pos = indexing_array[0];
-			while (*min_pos == 0) min_pos++;
+			//현재 인터페이스에서 제일 작은걸 찾습니다. 물론 0 빼고요
+			int* min_pos = indexing_array[zero_count];
 timer.stop();
 search_time += timer.get_nano();
 			//빼고 대기중인 값 삽입
 
-			std::cout << "최소값: " << *min_pos
-				<< std::endl << std::endl << std::endl;
+			//std::cout << "최소값: " << *min_pos << std::endl << std::endl << std::endl;
 
 
 			//대기배열의 값이 MAX보다 큰 경우 0 삽입
 			if (wating_array[i] > MAX)
 			{
 				*min_pos = 0;
+				zero_count++;
 			}
 			//대기배열의 값이 MAX아래일 경우에만 인터페이스의 값 변경
 			else
@@ -113,8 +109,7 @@ search_time += timer.get_nano();
 
 			//저장했으니까 정렬
 timer.start();
-			std::sort(indexing_array.begin(),
-				indexing_array.end(),
+			std::sort(indexing_array.begin(), indexing_array.end(),
 				[](int* lhs, int* rhs)
 			{
 				return (*lhs) < (*rhs);
@@ -122,16 +117,14 @@ timer.start();
 timer.stop();
 sort_time += timer.get_nano();
 
-			show_interface(interface_array);
+			//show_interface(interface_array);
 		}
 	}
 
-	all_timer.stop();
-	long long all_time = all_timer.get_nano();
+all_timer.stop();
+long long all_time = all_timer.get_nano();
 
 	std::cout << "최소값 탐색시간 총합 : " << search_time << std::endl;
 	std::cout << "정렬시간 총합 : " << sort_time << std::endl;
 	std::cout << "전체 수행시간 : " << all_time << std::endl;
-
-	return 0;
 }
