@@ -46,10 +46,9 @@ all_timer.start();
 					//std::cout << e <<" ";
 					i++;
 				}
-				#ifdef _PRINT_MODE 
-					std::cout << std::endl; 
-				#endif
 			}
+
+			show_interface(interface_array);
 		}
 
 		//25개를 넣습니다.
@@ -98,7 +97,7 @@ search_time += timer.get_nano();
 				std::cout << std::endl;
 			#endif
 
-			//show_interface(interface_array);
+			show_interface(interface_array);
 		}
 	}
 

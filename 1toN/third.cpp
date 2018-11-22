@@ -19,12 +19,12 @@ struct Comparer
 
 int third()
 {
-	Timer timer;
-	Timer all_timer;
-	long long search_time = 0;
-	long long sort_time = 0;
+Timer timer;
+Timer all_timer;
+long long search_time = 0;
+long long sort_time = 0;
 
-	all_timer.start();
+all_timer.start();
 
 	//인터페이스 5x5 배열
 	std::array<std::array<int, side>, side> interface_array;
@@ -36,14 +36,6 @@ int third()
 
 	//인덱스용 트리 집합
 	std::set<int*,Comparer> indexing_set;
-	
-
-	//일단 초기화
-	for (auto& arr : interface_array)
-		for (auto& e : arr)
-		{
-			indexing_set.insert(&e);
-		}
 
 	bool on_first = true;
 
@@ -71,6 +63,15 @@ int third()
 					i++;
 				}
 			}
+
+			//일단 초기화
+			for (auto& arr : interface_array)
+				for (auto& e : arr)
+				{
+					indexing_set.insert(&e);
+				}
+
+			show_interface(interface_array);
 		}
 
 		//25개를 넣습니다.
@@ -86,25 +87,19 @@ int third()
 		//25번 반복해서 확인하고 넣고...
 		for (int i = 0; i < InterfaceSize; i++)
 		{
-			auto min_pos = &(interface_array[0][0]);
-
-			while (*min_pos == 0) 
-			{
-				min_pos++;
-			}
-			//인터페이스 최소값의 위치를 기억할 포인터입니다.
-
-			/*최소값을 가져옵니다.*/
 timer.start();
 			//현재 인터페이스에서 제일 작은걸 찾습니다.
-			min_pos = *indexing_set.begin();
+			auto min_pos_iter = indexing_set.begin();
+			while (**min_pos_iter == 0) min_pos_iter++;
+			auto min_pos = *min_pos_iter;
 timer.stop();
 search_time += timer.get_nano();
-			//빼고 대기중인 값 삽입
 
-#ifdef _PRINT_MODE
-			std::cout << *min_pos << std::endl;
-#endif
+			std::cout << "최소값: " << *min_pos
+			<< std::endl << std::endl << std::endl;
+
+			//빼고 대기중인 값 삽입
+			indexing_set.erase(indexing_set.begin()); //정렬을 위해서 뺐다가
 
 			//대기배열의 값이 MAX보다 큰 경우 0 삽입
 			if (wating_array[i] > MAX)
@@ -115,13 +110,14 @@ search_time += timer.get_nano();
 			else
 				*min_pos = wating_array[i]; //대기중인 값 저장
 
-			//show_interface(interface_array);
-			//std::cout << std::endl;
+			indexing_set.insert(min_pos); //정렬을 위해서 다시 넣음
+
+			show_interface(interface_array);
 		}
 	}
 
-	all_timer.stop();
-	long long all_time = all_timer.get_nano();
+all_timer.stop();
+long long all_time = all_timer.get_nano();
 
 	std::cout << "최소값 탐색시간 총합 : " << search_time << std::endl;
 	std::cout << "전체 수행시간 : " << all_time << std::endl;

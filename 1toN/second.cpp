@@ -36,10 +36,6 @@ long long sort_time = 0;
 			i++;
 		}
 
-	//정렬한다.
-	std::sort(indexing_array.begin(),indexing_array.end(),
-		[](int* lhs, int* rhs) {return (*lhs) < (*rhs); }
-		);
 
 	bool on_first = true;
 
@@ -67,65 +63,66 @@ long long sort_time = 0;
 					i++;
 				}
 			}
+
+			//최초 정렬
+			std::sort(indexing_array.begin(), indexing_array.end(),
+				[](int* lhs, int* rhs) {return (*lhs) < (*rhs); }
+			);
+
+			show_interface(interface_array);
 		}
 
-		//25개를 넣습니다.
+		//대기배열에 25개를 넣습니다.
 		//2, 26-50
 		//3, 51-75
-		//4. 76-100
+		//4. 76-100 ...
 		std::iota(wating_array.begin(), wating_array.end(), n);
 
-		//그 25개의 배열을 섞습니다.
+		//그 25개의 대기배열을 섞습니다.
 		std::shuffle(wating_array.begin(), wating_array.end(), std::random_device{});
-
 
 		//25번 반복해서 확인하고 넣고...
 		for (int i = 0; i < InterfaceSize; i++)
 		{
-			int blank_count = 0; //대기 배열에 0이 차있는 수
+			//int blank_count = 0; //대기 배열에 0이 차있는 수
 
-			auto min_pos = &(interface_array[0][0]);
-
-			while (*min_pos == 0) 
-			{
-				min_pos++;
-			}
 			//인터페이스 최소값의 위치를 기억할 포인터입니다.
-
-			/*최소값을 가져옵니다.*/
+			int* min_pos = indexing_array[0];
+			
 timer.start();
 			//현재 인터페이스에서 제일 작은걸 찾습니다.
 			min_pos = indexing_array[0];
+			while (*min_pos == 0) min_pos++;
 timer.stop();
 search_time += timer.get_nano();
 			//빼고 대기중인 값 삽입
 
-#ifdef _PRINT_MODE
-			std::cout << *min_pos << std::endl;
-#endif
+			std::cout << "최소값: " << *min_pos
+				<< std::endl << std::endl << std::endl;
+
 
 			//대기배열의 값이 MAX보다 큰 경우 0 삽입
 			if (wating_array[i] > MAX)
 			{
 				*min_pos = 0;
-				blank_count++;
 			}
-			//대기배열에 값이 MAX아래일 경우에만 인터페이스에 값 변경
+			//대기배열의 값이 MAX아래일 경우에만 인터페이스의 값 변경
 			else
 				*min_pos = wating_array[i]; //대기중인 값 저장
 
+
 			//저장했으니까 정렬
 timer.start();
-			std::rotate(indexing_array.begin(), //맨 앞이 0이 됐으니까 한칸 앞으로 밀기
-				indexing_array.begin() + 1,
-				indexing_array.end());
-			std::sort(indexing_array.begin(), indexing_array.end()-blank_count,
-				[](int* lhs, int* rhs) {return (*lhs) < (*rhs); });
+			std::sort(indexing_array.begin(),
+				indexing_array.end(),
+				[](int* lhs, int* rhs)
+			{
+				return (*lhs) < (*rhs);
+			});
 timer.stop();
 sort_time += timer.get_nano();
 
-			//show_interface(interface_array);
-			//std::cout << std::endl;
+			show_interface(interface_array);
 		}
 	}
 

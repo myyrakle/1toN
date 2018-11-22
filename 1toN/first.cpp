@@ -47,9 +47,6 @@ all_timer.start();
 			i++;
 		}
 
-	//정렬한다.
-	bubble_sort(indexing_array);
-
 	bool on_first = true;
 
 	//4번. : 100/25 = 4
@@ -73,10 +70,14 @@ all_timer.start();
 				for (auto& e : arr)
 				{
 					e = wating_array[i];
-					//std::cout << e << " ";
 					i++;
 				}
 			}
+
+			//정렬한다.
+			bubble_sort(indexing_array);
+
+			show_interface(interface_array);
 		}
 
 		//25개를 넣습니다.
@@ -92,12 +93,13 @@ all_timer.start();
 		//25번 반복해서 확인하고 넣고...
 		for (int i = 0; i < InterfaceSize; i++)
 		{
-			auto min_pos = &(interface_array[0][0]);
-
-			while (*min_pos == 0) {
-				min_pos++;
-			}
 			//인터페이스 최소값의 위치를 기억할 포인터입니다.
+			int* min_pos = indexing_array[0];
+
+			/*while (*min_pos == 0) 
+			{
+				min_pos++;
+			}*/
 
 			/*최소값을 가져옵니다.*/
 timer.start();
@@ -107,29 +109,27 @@ timer.stop();
 time += timer.get_nano();
 			//빼고 대기중인 값 삽입
 
-#ifdef _PRINT_MODE
-			std::cout << *min_pos << std::endl;
-#endif
+			std::cout << "최소값: " << *min_pos 
+				<< std::endl << std::endl << std::endl;
 
-			//대기배열에 값이 MAX보다 큰 경우 0 삽입
+			//대기배열의 값이 MAX보다 큰 경우 0 삽입
 			if (wating_array[i] > MAX)
 				*min_pos = 0;
-			//대기배열에 값이 MAX아래일 경우에만 인터페이스에 값 변경
+			//대기배열의 값이 MAX아래일 경우에만 인터페이스의 값 변경
 			else
 				*min_pos = wating_array[i]; //대기중인 값 저장
 
+			
 			//저장했으니까 정렬
 timer.start();
 			std::rotate(indexing_array.begin(), //맨 앞이 0이 됐으니까 한칸 앞으로 밀기
 				indexing_array.begin() + 1,
 				indexing_array.end());
 			bubble_sort(indexing_array);
-			//std::sort(indexing_array.begin(), indexing_array.end());
 timer.stop(); 
 sort_time += timer.get_nano();
 
-			//show_interface(interface_array);
-			//std::cout << std::endl;
+			show_interface(interface_array);
 		}
 	}
 
