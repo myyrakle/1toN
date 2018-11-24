@@ -5,16 +5,11 @@ struct Comparer2
 {
 	constexpr bool operator()(const int* lhs, const int* rhs)
 	{
-		//if ((*rhs) == 0) //0이면 무조건 뒤로 밀어버림
-		//	return true;
-		//if (*lhs == 0)
-		//	return false;
-
 		return (*lhs) > (*rhs);
 	}
 };
 
-void fourth()
+void heap_version()
 {
 Timer timer;
 Timer all_timer;
@@ -37,9 +32,8 @@ all_timer.start();
 	//일단 초기화
 	for (auto& arr : interface_array)
 		for (auto& e : arr)
-		{
 			indexing_heap.push_back(&e);
-		}
+		
 
 	bool on_first = true;
 
@@ -88,7 +82,6 @@ all_timer.start();
 		//25번 반복해서 확인하고 넣고...
 		for (int i = 0; i < InterfaceSize; i++)
 		{
-			int zero_count = 0;
 
 timer.start();
 			//현재 인터페이스에서 제일 작은걸 찾습니다.

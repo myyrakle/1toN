@@ -10,16 +10,11 @@ struct Comparer
 {
 	constexpr bool operator()(const int* lhs, const int* rhs)
 	{
-		//if ((*rhs) == 0) //0이면 무조건 뒤로 밀어버림
-		//	return true;
-		//if (*lhs == 0)
-		//	return false;
-
 		return (*lhs) < (*rhs);
 	}
 };
 
-void third()
+void treeset_version()
 {
 Timer timer;
 Timer all_timer;
@@ -92,7 +87,8 @@ all_timer.start();
 timer.start();
 			//현재 인터페이스에서 제일 작은걸 찾습니다.
 			auto min_pos_iter = indexing_set.begin();
-			while (**min_pos_iter == 0) min_pos_iter++;
+			while (**min_pos_iter == 0) 
+				min_pos_iter++;
 			auto min_pos = *min_pos_iter;
 timer.stop();
 search_time += timer.get_nano();
@@ -100,11 +96,14 @@ search_time += timer.get_nano();
 			//std::cout << "최소값: " << *min_pos<< std::endl << std::endl << std::endl;
 
 			//빼고 대기중인 값 삽입
-			indexing_set.erase(indexing_set.begin()); //정렬을 위해서 뺐다가
+			indexing_set.erase(min_pos_iter); //정렬을 위해서 뺐다가
 
 			//대기배열의 값이 MAX보다 큰 경우 0 삽입
 			if (wating_array[i] > MAX)
+			{
 				*min_pos = 0;
+				//indexing_set.erase(min_pos_iter);
+			}
 			
 			//대기배열에 값이 MAX아래일 경우에만 인터페이스에 값 변경
 			else

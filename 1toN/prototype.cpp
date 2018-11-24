@@ -49,7 +49,7 @@ all_timer.start();
 				}
 			}
 
-			//show_interface(interface_array);
+			show_interface(interface_array);
 		}
 
 		//25개를 넣습니다.
@@ -85,6 +85,7 @@ timer.start();
 			}
 timer.stop();
 search_time += timer.get_nano();
+			std::cout << "최소값: " << *min_pos << std::endl << std::endl << std::endl;
 
 			
 
@@ -97,7 +98,7 @@ search_time += timer.get_nano();
 			else
 				*min_pos = wating_array[i]; //대기중인 값 저장
 
-			//show_interface(interface_array);
+			show_interface(interface_array);
 		}
 	}
 

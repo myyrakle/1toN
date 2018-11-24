@@ -17,7 +17,7 @@ void bubble_sort(Array& arr)
 	}
 }
 
-void first()
+void bubble_sort_version()
 {
 Timer timer;
 Timer all_timer;

@@ -2,7 +2,6 @@
 
 #include <list>
 
-//버블소트가 너무 느려서 내장 정렬함수인 std::sort 사용.
 //빈 공간의 유연한 처리를 위해, 배열 대신 list 사용
 
 //std::sort는 퀵소트, 힙소트, 삽입소트의 혼합이다.
@@ -10,7 +9,7 @@
 //그리고 대부분이 정렬되어있을 경우에는 삽입소트로 마무리한다.
 //그래서 웬만하면 n log n의 복잡도를 보여준다.
 
-void second()
+void list_sort_version()
 {
 Timer timer;
 Timer all_timer;
